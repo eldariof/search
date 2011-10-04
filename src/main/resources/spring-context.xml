@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:jee="http://www.springframework.org/schema/jee" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tool="http://www.springframework.org/schema/tool" xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:lang="http://www.springframework.org/schema/lang" xmlns:oxm=" http:/www.springframework.org/schema/oxm"
+       xmlns:task=" http:/www.springframework.org/schema/task" xmlns:jdbc=" http:/www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd   
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd 
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd 
+          http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool-3.0.xsd     
+          http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd 
+          http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd 
+          http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.0.xsd
+          http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd 
+          http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd 
+        ">
+
+	<context:annotation-config />
+		
+	<bean id="bookRepository" class="ru.eabdrazakov.search.service.impl.BookRepositoryImpl"/>
+	
+	<bean id="dataSource" class="org.postgresql.ds.PGPoolingDataSource">
+		<property name="serverName" value="localhost" />
+		<property name="databaseName" value="test" />
+		<property name="portNumber" value="5432" />
+		<property name="user" value="postgres" />
+		<property name="password" value="passwd" />
+		<property name="dataSourceName" value="datasource" />
+		<property name="initialConnections" value="1" />
+		<property name="maxConnections" value="100" />
+	</bean>
+	
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="persistenceUnitName" value="defaultManager"/>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="database" value="POSTGRESQL"/>
+				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect"/>
+				<property name="generateDdl" value="true" />
+				<property name="showSql" value="true" />
+			</bean>
+		</property>
+	</bean> 
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="jpaDialect">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
+		</property>
+	</bean>
+	
+</beans>

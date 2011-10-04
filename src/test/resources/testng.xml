@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="SEARCH Test Suite" verbose="2" parallel="false" thread-count="30" >
+    <test name="SEARCH Test">
+       <classes>
+       		<class name="ru.eabdrazakov.search.SearchTest" />
+       </classes>
+    </test>
+</suite>
